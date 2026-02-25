@@ -1,5 +1,3 @@
-# Makefile for myshell
-
 CC = gcc
 CFLAGS = -Wall -g
 
