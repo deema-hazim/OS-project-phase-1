@@ -16,8 +16,9 @@ void init_pipeline(Pipeline *p){
     }
 }
 
-// splits the input by spaces/tabs and puts it into the first command slot
-// returns 0 if ok, -1 if empty
+// splits the input by spaces/tabs and fills in the pipeline struct
+// detects > and 2> for output/error redirection and stores the filenames
+// returns 0 if ok, -1 if theres a problem
 int parse_input(char *input, Pipeline *p){
     int i = 0;
     char *tok = strtok(input, " \t");
@@ -25,10 +26,31 @@ int parse_input(char *input, Pipeline *p){
     if(tok == NULL)
         return -1;
 
-    // keep grabbing tokens until end of string or max args
     while(tok != NULL && i < MAX_ARGS - 1){
-        p->commands[0].args[i] = tok;
-        i++;
+
+        // check for output redirection >
+        if(strcmp(tok, ">") == 0){
+            tok = strtok(NULL, " \t");
+            if(tok == NULL){
+                error_missing_output_file();
+                return -1;
+            }
+            p->commands[0].output_file = tok;
+        }
+        // check for error redirection 2>
+        else if(strcmp(tok, "2>") == 0){
+            tok = strtok(NULL, " \t");
+            if(tok == NULL){
+                error_missing_error_file();
+                return -1;
+            }
+            p->commands[0].error_file = tok;
+        }
+        // regular arg, just add to the args array
+        else{
+            p->commands[0].args[i] = tok;
+            i++;
+        }
         tok = strtok(NULL, " \t");
     }
     p->commands[0].args[i] = NULL; // execvp needs null at end

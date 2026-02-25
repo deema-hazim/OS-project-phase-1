@@ -19,7 +19,8 @@ void execute_single(Command *cmd){
         return;
     }
     else if(pid == 0){
-        // child - replace with the command
+        // child - set up any redirections then run the command
+        apply_redirections(cmd);
         execvp(cmd->args[0], cmd->args);
         // only gets here if command doesnt exist
         error_command_not_found(cmd->args[0]);
