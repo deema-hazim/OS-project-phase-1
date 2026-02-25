@@ -8,6 +8,8 @@
 void execute_pipeline(Pipeline *p){
     if(p->num_commands == 1)
         execute_single(&p->commands[0]);
+    else
+        execute_pipes(p);
 }
 
 // forks, child calls execvp, parent waits
