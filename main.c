@@ -1,5 +1,5 @@
 // main.c
-// this is the main file for myshell, it runs the shell loop
+// main file for myshell, runs the shell loop
 
 #include "myshell.h"
 

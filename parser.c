@@ -1,6 +1,5 @@
 // parser.c
 // handles parsing the user input into the Pipeline and Command structs
-// right now only does simple commands (parts 1 and 2), will add pipes and redirection later
 
 #include "myshell.h"
 

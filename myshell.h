@@ -49,7 +49,7 @@ void execute_pipeline(Pipeline *p);
 void execute_single(Command *cmd);
 
 /* ─────────────────────────────────────────
-   REDIRECT FUNCTIONS (redirects.c) - partner
+   REDIRECT FUNCTIONS (redirects.c)
 ───────────────────────────────────────── */
 
 /* Applies input/output/error redirections for a command using dup2() */
