@@ -32,4 +32,15 @@ void apply_redirections(Command *cmd){
         dup2(fd, STDERR_FILENO);
         close(fd);
     }
+
+    // handle < (input redirection)
+    if(cmd->input_file != NULL){
+        int fd = open(cmd->input_file, O_RDONLY);
+        if(fd < 0){
+            error_file_not_found(cmd->input_file);
+            exit(EXIT_FAILURE);
+        }
+        dup2(fd, STDIN_FILENO);
+        close(fd);
+    }
 }

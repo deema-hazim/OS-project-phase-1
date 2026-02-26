@@ -1,6 +1,6 @@
 #include "myshell.h"
 
-void execute_pipes(Pipeline *p) {
+void execute_pipes(Pipeline *p){
     int n = p->num_commands;
 
     // create n-1 pipes for n commands
@@ -14,7 +14,7 @@ void execute_pipes(Pipeline *p) {
         }
     }
 
-    // store all child PIDs so we can wait for all of them at the end
+    // store all child pids so we can wait for all of them at the end
     pid_t pids[MAX_PIPES];
 
     for (int i = 0; i < n; i++){
@@ -26,19 +26,19 @@ void execute_pipes(Pipeline *p) {
         }
 
         if (pids[i] == 0){
-            // ── CHILD PROCESS ──
+            // CHILD PROCESS
 
-            // step 1: connect stdin to read end of previous pipe
-            // skip for first command - it reads from terminal
-            if (i > 0) {
+            //connect stdin to read end of previous pipe
+            // skip for first command because it reads from the terminal
+            if (i > 0){
                 if (dup2(pipe_fds[i - 1][0], STDIN_FILENO) == -1){
                     perror("dup2 stdin");
                     exit(EXIT_FAILURE);
                 }
             }
 
-            // step 2: connect stdout to write end of next pipe
-            // skip for last command - it writes to terminal
+            //connect stdout to write end of next pipe
+            // skip for last command because it writes to terminal
             if (i < n - 1){
                 if (dup2(pipe_fds[i][1], STDOUT_FILENO) == -1){
                     perror("dup2 stdout");
