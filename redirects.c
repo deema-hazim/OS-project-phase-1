@@ -8,6 +8,17 @@
 // use dup2 to point stdout or stderr to that file instead
 void apply_redirections(Command *cmd){
 
+    // handle < (input redirection)
+    if(cmd->input_file != NULL){
+        int fd = open(cmd->input_file, O_RDONLY);
+        if(fd < 0){
+            error_file_not_found(cmd->input_file);
+            exit(EXIT_FAILURE);
+        }
+        dup2(fd, STDIN_FILENO);
+        close(fd);
+    }
+    
     // handle > (output redirection)
     // open the file for writing, create it if it doesnt exist, truncate if it does
     if(cmd->output_file != NULL){
@@ -30,17 +41,6 @@ void apply_redirections(Command *cmd){
         }
         // replace stderr (fd 2) with our file
         dup2(fd, STDERR_FILENO);
-        close(fd);
-    }
-
-    // handle < (input redirection)
-    if(cmd->input_file != NULL){
-        int fd = open(cmd->input_file, O_RDONLY);
-        if(fd < 0){
-            error_file_not_found(cmd->input_file);
-            exit(EXIT_FAILURE);
-        }
-        dup2(fd, STDIN_FILENO);
         close(fd);
     }
 }

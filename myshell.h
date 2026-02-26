@@ -48,9 +48,8 @@ void execute_pipeline(Pipeline *p);
 /* Executes a single command with no pipes */
 void execute_single(Command *cmd);
 
-/* ─────────────────────────────────────────
-   REDIRECT FUNCTIONS (redirects.c)
-───────────────────────────────────────── */
+
+//Redirection functions (redirects.c)
 
 /* Applies input/output/error redirections for a command using dup2() */
 void apply_redirections(Command *cmd);

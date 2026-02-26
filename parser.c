@@ -41,19 +41,20 @@ int parse_input(char *input, Pipeline *p){
 
             //check for empty command between pipes
             char *trimmed = ptr;
-            while(*trimmed == ' ') trimmed++; //skip leading spaces
-            if (*trimmed == '\0' || *trimmed == '|') {
+            while(*trimmed == ' ') trimmed++;
+
+            // empty command between two pipes e.g. "ls | | grep"
+            if (*trimmed == '|') {
                 error_empty_command_between_pipes();
                 return -1;
             }
 
-            //check we haven't exceeded max pipes
+            // check we haven't exceeded max pipes
             if (num_segments >= MAX_PIPES) {
                 fprintf(stderr, "Too many pipes.\n");
                 return -1;
             }
 
-            //store ptr as the start of the next segment and increment the counter
             segments[num_segments++] = ptr;
         }
 
