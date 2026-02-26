@@ -43,7 +43,7 @@ int parse_input(char *input, Pipeline *p){
             char *trimmed = ptr;
             while(*trimmed == ' ') trimmed++;
 
-            // empty command between two pipes e.g. "ls | | grep"
+            // empty command between two pipes
             if (*trimmed == '|') {
                 error_empty_command_between_pipes();
                 return -1;

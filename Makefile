@@ -3,8 +3,8 @@ CFLAGS = -Wall -g
 
 all: myshell
 
-myshell: main.o parser.o executor.o errors.o redirects.o
-	$(CC) $(CFLAGS) -o myshell main.o parser.o executor.o errors.o redirects.o
+myshell: main.o parser.o executor.o errors.o redirects.o pipes.o
+	$(CC) $(CFLAGS) -o myshell main.o parser.o executor.o errors.o redirects.o pipes.o
 
 main.o: main.c myshell.h
 	$(CC) $(CFLAGS) -c main.c
@@ -20,6 +20,9 @@ errors.o: errors.c myshell.h
 
 redirects.o: redirects.c myshell.h
 	$(CC) $(CFLAGS) -c redirects.c
+
+pipes.o: pipes.c myshell.h
+	$(CC) $(CFLAGS) -c pipes.c
 
 clean:
 	rm -f *.o myshell
