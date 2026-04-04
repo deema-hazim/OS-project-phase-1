@@ -145,16 +145,22 @@ int parse_input(char *input, Pipeline *p){
 
             }
 
-            //same logic as above but for error redirection
-            else if (strcmp(token, "2>") == 0){
-                //get the next token which should be the error filename
-                token = next_token(&seg_ptr);
-                if (token == NULL) {
-                    error_missing_error_file();
-                    return -1;
+            else if (strncmp(token, "2>", 2) == 0){
+                // handle both "2> file" and "2>file" (with or without space)
+                char *filename = token + 2;
+                if(strlen(filename) == 0){
+                    // space between 2> and filename, get next token
+                    token = next_token(&seg_ptr);
+                    if (token == NULL){
+                        error_missing_error_file();
+                        return -1;
+                    }
+                    cmd->error_file = token;
+                } 
+                else{
+                    // no space, filename is attached directly e.g. 2>error
+                    cmd->error_file = filename;
                 }
-                cmd->error_file = token;
-
             }
 
             else{
