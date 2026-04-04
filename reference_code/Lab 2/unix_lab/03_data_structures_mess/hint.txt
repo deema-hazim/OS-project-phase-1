@@ -1,0 +1,10 @@
+1) Copy study_plan.txt here
+2) Sort + remove duplicates into unique_plan.txt (use input redirection once)
+3) Count words of unique_plan.txt into count.txt
+4) Create ONE reverse-sorted version of unique_plan.txt
+5) Rename unique_plan.txt to plan_final.txt
+
+Progress update:
+From the lab root:
+  cp 03_data_structures_mess/progress_step3.txt progress.txt
+  cat progress.txt

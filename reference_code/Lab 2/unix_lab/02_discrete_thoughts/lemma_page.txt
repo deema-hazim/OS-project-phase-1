@@ -1,0 +1,13 @@
+Lemma noted.
+
+1) Open tasks.txt
+2) Take the first 3 lines and last 2 lines
+3) Combine them into study_plan.txt
+4) Sort study_plan.txt alphabetically in place (in both ascending and descending order)
+
+Progress update:
+From the lab root:
+  cp 02_discrete_thoughts/progress_step2.txt progress.txt
+  cat progress.txt
+
+Proceed to 03_data_structures_mess.

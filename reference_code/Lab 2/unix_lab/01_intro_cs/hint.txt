@@ -1,0 +1,5 @@
+Intro to CS 
+
+1) List files here
+2) Remove check_in.txt
+3) If stuck, remember hidden files exist

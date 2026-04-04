@@ -1,0 +1,6 @@
+There is a file called 'note_fragment.txt', but it is NOT in this folder.
+It is located somewhere inside the folders within this one.
+
+1) Search through all subfolders starting from here to locate 'note_fragment.txt'
+2) Once you find it, read its contents
+

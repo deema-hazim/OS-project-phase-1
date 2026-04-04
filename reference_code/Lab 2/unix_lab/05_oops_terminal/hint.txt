@@ -1,0 +1,13 @@
+1) Run a command that fails and redirect stderr to errors.log
+2) Run another failing command and append stderr
+3) Display errors.log
+
+4) Create pep_talk.txt:
+   "I am learning. I am trying. I will ask questions."
+5) Move it to 06_final_message
+
+Progress update:
+From the lab root:
+  cp 05_oops_terminal/progress_step5.txt progress.txt
+
+cat progress.txt

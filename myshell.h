@@ -7,12 +7,19 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <fcntl.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 
 //constants
-#define MAX_ARGS 64     // max arguments per command
-#define MAX_PIPES 16    // maximum commands in a pipeline
-#define MAX_INPUT 1024  // maximum length of one input line
+#define MAX_ARGS 64 // max arguments per command
+#define MAX_PIPES 16 // maximum commands in a pipeline
+#define MAX_INPUT 1024 // maximum length of one input line
+
+// FOR PHASE 2 (CLIENT-SERVER COMMUNICATION)
+#define PORT 8080 // TCP port the server listens
+#define BUFFER_SIZE 4096 // buffer size for sending or receiving data over the socket
 
 
 // structs
@@ -38,9 +45,7 @@ void init_pipeline(Pipeline *p);
 // returns 0 on success, -1 on error
 int parse_input(char *input, Pipeline *p);
 
-/* ─────────────────────────────────────────
-   EXECUTOR FUNCTIONS (executor.c)
-───────────────────────────────────────── */
+/* EXECUTOR FUNCTIONS (executor.c) */
 
 /* Main dispatch function - decides whether to run single command or pipeline */
 void execute_pipeline(Pipeline *p);

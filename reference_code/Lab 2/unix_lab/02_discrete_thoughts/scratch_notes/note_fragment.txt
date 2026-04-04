@@ -1,0 +1,2 @@
+The word “lemma” appears in one of the text files in this directory.
+Find the file that mentions it and read that file next.

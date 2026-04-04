@@ -1,0 +1,15 @@
+1) Create a folder named study_corner
+2) Enter it
+3) Create study_log.txt with YOUR NAME
+4) Append:
+   - your username
+   - your current directory
+5) Verify it has exactly 3 lines
+
+Progress update:
+When you're done with this folder, go back to the lab root and run:
+  cp 01_intro_cs/progress_step1.txt progress.txt
+Then view it with:
+  cat progress.txt
+
+Then move to 02_discrete_thoughts using one cd.

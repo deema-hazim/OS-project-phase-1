@@ -1,13 +1,27 @@
 CC = gcc
 CFLAGS = -Wall -g
 
-all: myshell
+all: myshell server client
 
+# PHASE 1
 myshell: main.o parser.o executor.o errors.o redirects.o pipes.o
 	$(CC) $(CFLAGS) -o myshell main.o parser.o executor.o errors.o redirects.o pipes.o
 
+# PHAES 2
+server: server.o parser.o executor.o errors.o redirects.o pipes.o
+	$(CC) $(CFLAGS) -o server server.o parser.o executor.o errors.o redirects.o pipes.o
+
+client: client.o
+	$(CC) $(CFLAGS) -o client client.o
+
 main.o: main.c myshell.h
 	$(CC) $(CFLAGS) -c main.c
+
+server.o: server.c myshell.h
+	$(CC) $(CFLAGS) -c server.c
+
+client.o: client.c myshell.h
+	$(CC) $(CFLAGS) -c client.c
 
 parser.o: parser.c myshell.h
 	$(CC) $(CFLAGS) -c parser.c
@@ -25,4 +39,4 @@ pipes.o: pipes.c myshell.h
 	$(CC) $(CFLAGS) -c pipes.c
 
 clean:
-	rm -f *.o myshell
+	rm -f *.o myshell server client
