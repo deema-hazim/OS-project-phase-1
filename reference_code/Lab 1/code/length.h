@@ -1,3 +1,0 @@
-//function prototype
-
-double getLength();

@@ -1,9 +1,0 @@
-Deadline: Quiz opens at 08:00
-Break: "Just 5 minutes"
-Coffee: Refill #1
-Tab: Browser tab number 17 is still open
-Deadline: Quiz opens at 08:00
-Coffee: Refill #2
-Break: Sunlight spotted.
-Deadline: Project checkpoint due 23:59
-Tab: Another tab opened for "quick search"
