@@ -66,6 +66,7 @@ void execute_pipes(Pipeline *p);
 
 
 //error functions (errors.c)
+//PHASE 1 ERRORS
 void error_missing_input_file();
 void error_missing_output_file();
 void error_missing_error_file();
@@ -73,5 +74,15 @@ void error_missing_command_after_pipe();
 void error_empty_command_between_pipes();
 void error_command_not_found(char *cmd);
 void error_file_not_found(char *file);
+
+//PHASE 2 ERRORS
+void error_socket_creation();
+void error_connection_failed();
+void error_server_disconnected();
+void error_bind_failed();
+void error_listen_failed();
+void error_accept_failed();
+void error_malloc_failed();
+void error_execution_failed();
 
 #endif

@@ -3,16 +3,14 @@ CFLAGS = -Wall -g
 
 all: myshell server client
 
-# PHASE 1
 myshell: main.o parser.o executor.o errors.o redirects.o pipes.o
 	$(CC) $(CFLAGS) -o myshell main.o parser.o executor.o errors.o redirects.o pipes.o
 
-# PHAES 2
 server: server.o parser.o executor.o errors.o redirects.o pipes.o
 	$(CC) $(CFLAGS) -o server server.o parser.o executor.o errors.o redirects.o pipes.o
 
-client: client.o
-	$(CC) $(CFLAGS) -o client client.o
+client: client.o errors.o
+	$(CC) $(CFLAGS) -o client client.o errors.o
 
 main.o: main.c myshell.h
 	$(CC) $(CFLAGS) -c main.c
