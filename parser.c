@@ -16,21 +16,40 @@ void init_pipeline(Pipeline *p){
     }
 }
 
-//removes surrounding quotes from a token if present
-void strip_quotes(char *token){
-    int len = strlen(token);
+// tokenizes a string respecting quoted strings as single tokens
+// strips the surrounding quotes and returns the content inside
+char *next_token(char **str){
+    if(*str == NULL || **str == '\0') return NULL;
 
-    //check for matching double or single quotes
-    if(len >= 2 && 
-      ((token[0] == '"' && token[len-1] == '"') || 
-       (token[0] == '\'' && token[len-1] == '\''))){
-        
-        //shift everything left by one to remove opening quote
-        memmove(token, token + 1, len - 2);
-        
-        //remove closing quote by null terminating earlier
-        token[len - 2] = '\0';
+    // skip leading spaces and tabs
+    while(**str == ' ' || **str == '\t') (*str)++;
+    if(**str == '\0') return NULL;
+
+    char *start;
+
+    // if token starts with a quote, find the matching closing quote
+    // and treat everything inside as one single token
+    if(**str == '"' || **str == '\''){
+        char quote = **str;
+        (*str)++; // skip opening quote
+        start = *str; // token starts after the opening quote
+        while(**str != '\0' && **str != quote) (*str)++;
+        if(**str == quote){
+            **str = '\0'; // null terminate at closing quote
+            (*str)++;     // move past closing quote
+        }
     }
+    else{
+        // regular token, split on spaces and tabs
+        start = *str;
+        while(**str != '\0' && **str != ' ' && **str != '\t') (*str)++;
+        if(**str != '\0'){
+            **str = '\0';
+            (*str)++;
+        }
+    }
+
+    return start;
 }
 
 int parse_input(char *input, Pipeline *p){
@@ -95,16 +114,18 @@ int parse_input(char *input, Pipeline *p){
         Command *cmd = &p->commands[i]; //cmd is a pointer to the current command struct we're filling in
         int arg_index = 0; //tracks how many args we've added so far
 
-        //strtok splits segments[i] by spaces and tabs, returning the first token
-        char *token = strtok(segments[i], " \t");
+        //use next_token instead of strtok so quoted strings are treated as one token
+        //and surrounding quotes are stripped automatically
+        char *seg_ptr = segments[i];
+        char *token = next_token(&seg_ptr);
 
-        //keep going until strtok returns NULL
+        //keep going until next_token returns NULL
         while (token != NULL){
 
             //if the current token is "<" we know the next token must be the input filename
             if (strcmp(token, "<") == 0){
-                //continue from where strtok left off to get the next token, which should be the filename
-                token = strtok(NULL, " \t");
+                //get the next token which should be the filename
+                token = next_token(&seg_ptr);
                 if (token == NULL){
                     error_missing_input_file();
                     return -1;
@@ -115,7 +136,7 @@ int parse_input(char *input, Pipeline *p){
 
             //same logic as above but for output redirection
             else if (strcmp(token, ">") == 0){
-                token = strtok(NULL, " \t");
+                token = next_token(&seg_ptr);
                 if (token == NULL) {
                     error_missing_output_file();
                     return -1;
@@ -126,8 +147,8 @@ int parse_input(char *input, Pipeline *p){
 
             //same logic as above but for error redirection
             else if (strcmp(token, "2>") == 0){
-                //continue where strtok left off to get the next token which should be the error filename
-                token = strtok(NULL, " \t");
+                //get the next token which should be the error filename
+                token = next_token(&seg_ptr);
                 if (token == NULL) {
                     error_missing_error_file();
                     return -1;
@@ -142,12 +163,11 @@ int parse_input(char *input, Pipeline *p){
                     fprintf(stderr, "Too many arguments.\n");
                     return -1;
                 }
-                strip_quotes(token); //remove surrounding quotes if present
                 cmd->args[arg_index++] = token;
             }
 
             //get the next token from this segment and continue the loop
-            token = strtok(NULL, " \t");
+            token = next_token(&seg_ptr);
         }
 
         //after all the tokens are processed, we need to NULL terminate the args array so execvp() knows where it ends
