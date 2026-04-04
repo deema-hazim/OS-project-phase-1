@@ -18,7 +18,7 @@
 #define MAX_INPUT 1024 // maximum length of one input line
 
 // FOR PHASE 2 (CLIENT-SERVER COMMUNICATION)
-#define PORT 8080 // TCP port the server listens
+#define PORT 12345 // TCP port the server listens
 #define BUFFER_SIZE 4096 // buffer size for sending or receiving data over the socket
 
 
