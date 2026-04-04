@@ -16,6 +16,23 @@ void init_pipeline(Pipeline *p){
     }
 }
 
+//removes surrounding quotes from a token if present
+void strip_quotes(char *token){
+    int len = strlen(token);
+
+    //check for matching double or single quotes
+    if(len >= 2 && 
+      ((token[0] == '"' && token[len-1] == '"') || 
+       (token[0] == '\'' && token[len-1] == '\''))){
+        
+        //shift everything left by one to remove opening quote
+        memmove(token, token + 1, len - 2);
+        
+        //remove closing quote by null terminating earlier
+        token[len - 2] = '\0';
+    }
+}
+
 int parse_input(char *input, Pipeline *p){
     init_pipeline(p); //reset the pipeline struct before parsing new input
 
@@ -125,6 +142,7 @@ int parse_input(char *input, Pipeline *p){
                     fprintf(stderr, "Too many arguments.\n");
                     return -1;
                 }
+                strip_quotes(token); //remove surrounding quotes if present
                 cmd->args[arg_index++] = token;
             }
 
