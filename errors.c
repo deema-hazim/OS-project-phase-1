@@ -26,7 +26,7 @@ void error_empty_command_between_pipes(){
 }
 
 void error_command_not_found(char *cmd){
-    fprintf(stderr, "%s: command not found\n", cmd);
+    fprintf(stderr, "Command not found: %s\n", cmd);
 }
 
 void error_file_not_found(char *file){
@@ -66,4 +66,11 @@ void error_malloc_failed(){
 
 void error_execution_failed(){
     fprintf(stderr, "Server error: failed to execute command.\n");
+}
+
+
+// phase 3
+
+void error_thread_creation(){
+    fprintf(stderr, "Failed to create thread for client.\n");
 }

@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 
 
 //constants
@@ -84,5 +85,8 @@ void error_listen_failed();
 void error_accept_failed();
 void error_malloc_failed();
 void error_execution_failed();
+
+//phase 3
+void error_thread_creation();
 
 #endif

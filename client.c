@@ -56,9 +56,10 @@ int main(){
         if (strlen(command) == 0)
             continue;
 
-        //handle exit: notify the server then close
+        //for the exit command, notify the server then close the connection
         if (strcmp(command, "exit") == 0) {
             send(network_socket, "exit\n", 5, 0);
+            printf("Disconnected from server.\n");
             break;
         }
 
