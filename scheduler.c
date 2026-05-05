@@ -99,8 +99,16 @@ static void classify_command(const char *cmd, TaskType *type, int *n){
 }
 
 static void log_state(int client_id, const char *st, int n){
+    const char *color;
+    if (strcmp(st, "created")  == 0) color = "\e[34m"; // blue
+    else if(strcmp(st, "started")  == 0) color = "\e[32m"; // green
+    else if(strcmp(st, "running")  == 0) color = "\e[32m"; // green
+    else if(strcmp(st, "waiting")  == 0) color = "\e[33m"; // yellow
+    else if(strcmp(st, "ended")    == 0) color = "\e[31m"; // red
+    else color = "\e[0m";
+
     pthread_mutex_lock(&print_lock);
-    printf("(%d)--- %s (%d)\n", client_id, st, n);
+    printf("(%d)--- %s%s\e[0m (%d)\n", client_id, color, st, n);
     fflush(stdout);
     pthread_mutex_unlock(&print_lock);
 }
@@ -417,11 +425,13 @@ static int run_program_quantum(Task *task){
     task->n_remaining -= elapsed;
 
     // append this run to the gantt
-    sim_clock += elapsed;
-    char seg[64];
-    snprintf(seg, sizeof(seg), "P%d-(%d)-", task->client_id, sim_clock);
-    if(strlen(gantt_buf) + strlen(seg) < sizeof(gantt_buf) - 1){
-        strcat(gantt_buf, seg);
+    if(elapsed>0){
+        sim_clock += elapsed;
+        char seg[64];
+        snprintf(seg, sizeof(seg), "P%d-(%d)-", task->client_id, sim_clock);
+        if(strlen(gantt_buf) + strlen(seg) < sizeof(gantt_buf) - 1){
+            strcat(gantt_buf, seg);
+        }
     }
 
     // check waitpid in case child exited without us seeing EOF
@@ -519,14 +529,15 @@ static void *scheduler_thread_func(void *arg){
         last_run_task = task;
         pthread_mutex_unlock(&queue_lock);
 
-        log_gantt();
-
         if(finished){
             send_program_output(task);
 
             pthread_mutex_lock(&queue_lock);
             if(last_run_task == task) last_run_task = NULL;
+            int queue_empty = (queue_head == NULL);
             pthread_mutex_unlock(&queue_lock);
+
+            if(queue_empty) log_gantt();
 
             free_task(task);
         }

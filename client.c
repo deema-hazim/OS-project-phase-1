@@ -32,13 +32,16 @@ int main(){
         exit(EXIT_FAILURE);
     }
 
+    printf("Connected to a server\n");
+    fflush(stdout);
+
     //main shell loop
     //read a command, send it to the server, receive and print the response
     char command[MAX_INPUT];
 
     while(1){
         //show the prompt
-        printf("$ ");
+        printf(">>> ");
         fflush(stdout);
 
         //read input from the user
